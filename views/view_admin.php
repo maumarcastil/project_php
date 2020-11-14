@@ -48,7 +48,7 @@ redirect_unset_session();
 
         </div>
 
-        
+
         <div id="tabla">
         </div>
 
@@ -173,7 +173,7 @@ redirect_unset_session();
                         <select class="form-control" name="select_categoria">
                             <option value="0"> Seleccione una opcion</option>
                             <?php
-                            $tipos = obtener_categorias();
+                            $tipos = obtener_categorias_select();
                             foreach ($tipos as $tipo) {
                                 echo ("<option value='" . $tipo[0] . "'>" . $tipo[1] . "</option>" . "<br>");
                             }
@@ -202,6 +202,168 @@ redirect_unset_session();
 </div>
 
 
+
+<!-- Modal EDITAR USUARIOS -->
+<div class="modal fade" id="modal_editar_usuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="../functions/back_admin_crear_usuario.php" method="POST">
+
+                    <div class="form-group" hidden>
+                        <label for="exampleFormControlInput1">id</label>
+                        <input type="number" class="form-control" id="txt_id" name="txt_id" placeholder="id" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Nombre completo</label>
+                        <input type="text" class="form-control" id="txt_nombre" name="txt_nombre" placeholder="Nombre completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Direccion</label>
+                        <input type="text" class="form-control" id="txt_dir" name="txt_dir" placeholder="Direccion">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Telefono</label>
+                        <input type="number" class="form-control" id="txt_num" name="txt_num" placeholder="Telefono">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Email</label>
+                        <input type="email" class="form-control" id="txt_email" name="txt_email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Tipo usuario</label>
+                        <select class="form-control" name="select_tipo">
+                            <option value="0"> Seleccione una opcion</option>
+                            <?php
+                            $tipos = obtener_tipo();
+                            foreach ($tipos as $tipo) {
+                                echo ("<option value='" . $tipo[0] . "'>" . $tipo[1] . "</option>" . "<br>");
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="d-flex flex-row bd-highlight mb-2 justify-content-around">
+                        <div class="p-2 w-50">
+                            <button class="btn btn-danger btn-block" type="button" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="p-2 w-50">
+                            <button class="btn btn-success btn-block" type="submit">Guardar</button>
+                        </div>
+
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal EDITAR CATEGORIA -->
+<div class="modal fade" id="modal_editar_categoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="../functions/back_admin_crear_categoria.php" method="POST">
+
+                    <div class="form-group" hidden>
+                        <label for="exampleFormControlInput1">id</label>
+                        <input type="number" class="form-control" id="txt_id" name="txt_id" placeholder="id" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Categoria</label>
+                        <input type="text" class="form-control" id="txt_categoria" name="txt_categoria" placeholder="Categoria">
+                    </div>
+
+                    <div class="d-flex flex-row bd-highlight mb-2 justify-content-around">
+                        <div class="p-2 w-50">
+                            <button class="btn btn-danger btn-block" type="button" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="p-2 w-50">
+                            <button class="btn btn-success btn-block" type="submit">Guardar</button>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal EDITAR SERVICIO -->
+<div class="modal fade" id="modal_editar_servicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar servicio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="../functions/back_admin_crear_categoria.php" method="POST">
+
+                    <div class="form-group" hidden>
+                        <label for="exampleFormControlInput1">id</label>
+                        <input type="number" class="form-control" id="txt_id" name="txt_id" placeholder="id" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Categoria para el servicio</label>
+                        <select class="form-control" name="select_categoria">
+                            <option value="0"> Seleccione una opcion</option>
+                            <?php
+                            $tipos = obtener_categorias_select();
+                            foreach ($tipos as $tipo) {
+                                echo ("<option value='" . $tipo[0] . "'>" . $tipo[1] . "</option>" . "<br>");
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Servicio</label>
+                        <input type="text" class="form-control" id="txt_servicio" name="txt_categoria" placeholder="Categoria">
+                    </div>
+
+                    <div class="d-flex flex-row bd-highlight mb-2 justify-content-around">
+                        <div class="p-2 w-50">
+                            <button class="btn btn-danger btn-block" type="button" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="p-2 w-50">
+                            <button class="btn btn-success btn-block" type="submit">Guardar</button>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="./js/helpers_view_admin.js" type="text/javascript"></script>
 <?php
 require_once './templates/footer.php';
 ?>

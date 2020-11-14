@@ -35,7 +35,7 @@ if (!empty($_POST)) {
                     break;
                 case "solicitante":
                     $_SESSION["user"] = $row;
-                    echo("<br>Redirect view_solicitante");
+                    header("location: ../views/view_solicitante.php");
                     break;
                 default:
                     echo("<br>no se tomo una opciones correctas");
