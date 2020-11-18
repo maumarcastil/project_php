@@ -3,7 +3,8 @@ require_once './templates/header.php';
 
 require_once "../functions/helpers.php";
 redirect_unset_session();
-?>
+/* isset_session_user();
+ */?>
 
 
 <br>

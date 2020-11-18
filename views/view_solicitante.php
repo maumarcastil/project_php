@@ -1,17 +1,13 @@
 <?php
 require_once './templates/header.php';
-
 require_once "../functions/helpers.php";
 redirect_unset_session();
 ?>
 
 <div class="container p-3">
-<?php
-existen_requerimientos();
-?>
+    <?php existen_requerimientos();
+    ?>
 </div>
-
-
 
 <!-- Modal CREAR REQUERIMIENTO -->
 <div class="modal fade" id="modal_crear_requerimiento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -25,39 +21,32 @@ existen_requerimientos();
             </div>
             <div class="modal-body">
 
-                <form action="../functions/back_admin_crear_usuario.php" method="POST">
+                <form action="../functions/back_solic_crear_requerimiento.php" method="POST">
 
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Nombre completo</label>
-                        <input type="text" class="form-control" name="txt_nombre" placeholder="Nombre completo">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Direccion</label>
-                        <input type="text" class="form-control" name="txt_dir" placeholder="Direccion">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Telefono</label>
-                        <input type="number" class="form-control" name="txt_num" placeholder="Telefono">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Email</label>
-                        <input type="email" class="form-control" name="txt_email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Password</label>
-                        <input type="password" class="form-control" name="txt_password" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Tipo usuario</label>
-                        <select class="form-control" name="select_tipo">
+                        <label for="exampleFormControlSelect1">Categoria para el servicio</label>
+                        <select class="form-control" name="select_categoria" id="select_categoria">
                             <option value="0"> Seleccione una opcion</option>
                             <?php
-                            $tipos = obtener_tipo();
-                            foreach ($tipos as $tipo) {
-                                echo ("<option value='" . $tipo[0] . "'>" . $tipo[1] . "</option>" . "<br>");
+                            $categorias = obtener_categorias_select();
+                            foreach ($categorias as $categoria) {
+                                echo ("<option value='" . $categoria[0] . "'>" . $categoria[1] . "</option>" . "<br>");
                             }
                             ?>
                         </select>
+                    </div>
+                    <!-- CONTENEDOR DE SELECT ACTUALIZABLE SERVICIOS -->
+                    <div class="form-group" id="contenedor_servicio">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Descripcion</label>
+                        <textarea class="form-control" id="txt_descripcion" name="txt_descripcion" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Ubicación dentro de la empresa</label>
+                        <input type="text" class="form-control" name="txt_ubicacion" placeholder="Ubicación">
                     </div>
                     <div class="d-flex flex-row bd-highlight mb-2 justify-content-around">
                         <div class="p-2 w-50">
@@ -72,9 +61,10 @@ existen_requerimientos();
             </div>
         </div>
     </div>
+
 </div>
 
-
+<script src="./js/helpers_view_solicitante.js" type="text/javascript"></script>
 <?php
 require_once './templates/footer.php';
 ?>
