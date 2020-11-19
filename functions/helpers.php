@@ -1,6 +1,7 @@
 <?php
 
 require "../db/Conexion.php";
+require "../functions/PHPMailer/email.php";
 
 global $con;
 
@@ -179,13 +180,21 @@ function obtener_requerimientos()
 }
 
 
-
 function crear_requerimiento($descripcion, $ubicacion, $categoria, $servicio){
     global $con;
+
     // SOLICITANTE = ID USUARIO LOGEADO
     $solicitante = $_SESSION["user"]["idusuarios"];
     $query = "call crear_requerimiento('$descripcion', '$ubicacion', $solicitante, $categoria, $servicio);";
-    mysqli_query($con, $query);
-    echo "Se creo con exito el requerimiento";  
-    header("Location: ../views/view_solicitante.php");
+    $sql = mysqli_query($con, $query);
+    $response = mysqli_fetch_assoc($sql);  
+    $email = enviar_email($response["codigo"],$_SESSION["user"]["email"],"Reportado", "Creacion de requerimiento");
+    if($email){
+        echo "Se creo con exito el requerimiento";
+        /* header("Location: ../views/view_solicitante.php"); */
+    }else{
+        echo "Error al crear el requerimiento";
+        /* header("Location: ../views/view_solicitante.php"); */
+    } 
+    /* header("Location: ../views/view_solicitante.php"); */
 }
