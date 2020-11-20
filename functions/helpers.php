@@ -18,8 +18,8 @@ function isset_session_user()
             case "administrador":
                 header("location: view_admin.php");
                 break;
-            case "tecnico":
-                echo ("<br>Redirect view_admin");
+            case "soporte":
+                header("location: view_soporte.php");
                 break;
             case "solicitante":
                 header("location: view_solicitante.php");
@@ -41,15 +41,35 @@ function redirect_unset_session()
 }
 
 
-function existen_requerimientos()
+function existen_requerimientos_solicitantes()
 {
-    $res = obtener_requerimientos();
+    $res = obtener_requerimientos_solicitante();
     if (empty($res)) {
-        require_once './templates/sin_requerimientos.php';
+        require_once './templates/solicitante_sin_requerimientos.php';
     } else {
-        require_once './templates/con_requerimientos.php';
+        require_once './templates/solicitante_con_requerimientos.php';
     }
 }
+
+function existen_requerimientos_soporte()
+{
+    $res = obtener_requerimientos_solicitante();
+    if (empty($res)) {
+        require_once './templates/soporte_sin_requerimientos.php';
+    } else {
+        require_once './templates/soporte_con_requerimientos.php';
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 /////////// TIPO USUARIO////////////////////////
 
@@ -62,6 +82,15 @@ function obtener_tipo()
     $response = mysqli_fetch_all($sql);
     return $response;
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -86,6 +115,19 @@ function borrar_usuario($id)
     $sql = mysqli_query($con, $query);
     echo "Borardo exitoso";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /////////////// CATEGORIAS  ////////////////
@@ -117,6 +159,17 @@ function borrar_categoria($id)
     $sql = mysqli_query($con, $query);
     echo "Borardo exitoso";
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 /////////////// SERVICIOS  ////////////////
@@ -157,7 +210,6 @@ function obener_servicios_categoria($id)
 }
 
 
-
 //borrar usuario
 function borrar_servicio($id)
 {
@@ -168,9 +220,35 @@ function borrar_servicio($id)
 }
 
 
+
+
+
+
 //////////////////  REQUERIMIENTOS  ///////////////
 
-function obtener_requerimientos()
+function crear_requerimiento($descripcion, $ubicacion, $categoria, $servicio){
+    global $con;
+    $informacion = "Se agrego un nuevo requerimiento desde su cuenta.";
+
+    // SOLICITANTE = ID USUARIO LOGEADO
+    $solicitante = $_SESSION["user"]["idusuarios"];
+    $query = "call crear_requerimiento('$descripcion', '$ubicacion', $solicitante, $categoria, $servicio);";
+    $sql = mysqli_query($con, $query);
+    $response = mysqli_fetch_assoc($sql);  
+    $email = enviar_email($response["codigo"], $informacion,$_SESSION["user"]["email"],"Reportado", "Creacion de requerimiento");
+    if($email){
+        echo "Se creo con exito el requerimiento";
+        /* header("Location: ../views/view_solicitante.php"); */
+    }else{
+        echo "Error al crear el requerimiento";
+        /* header("Location: ../views/view_solicitante.php"); */
+    } 
+    /* header("Location: ../views/view_solicitante.php"); */
+}
+
+
+//Lista requerimientos de solicitante
+function obtener_requerimientos_solicitante()
 {
     global $con;
     $query = "select * from requerimientos where solicitante_idusuarios = " . $_SESSION["user"]["idusuarios"] . ";";
@@ -180,21 +258,53 @@ function obtener_requerimientos()
 }
 
 
-function crear_requerimiento($descripcion, $ubicacion, $categoria, $servicio){
+//Lista de todos los requerimientos disponibles para soporte
+function obtener_requerimientos_soporte(){
     global $con;
-
-    // SOLICITANTE = ID USUARIO LOGEADO
-    $solicitante = $_SESSION["user"]["idusuarios"];
-    $query = "call crear_requerimiento('$descripcion', '$ubicacion', $solicitante, $categoria, $servicio);";
+    $query = "select * from requerimientos where soporte_idusuarios is null;";
     $sql = mysqli_query($con, $query);
-    $response = mysqli_fetch_assoc($sql);  
-    $email = enviar_email($response["codigo"],$_SESSION["user"]["email"],"Reportado", "Creacion de requerimiento");
-    if($email){
-        echo "Se creo con exito el requerimiento";
-        /* header("Location: ../views/view_solicitante.php"); */
-    }else{
-        echo "Error al crear el requerimiento";
-        /* header("Location: ../views/view_solicitante.php"); */
-    } 
-    /* header("Location: ../views/view_solicitante.php"); */
+    $response = mysqli_fetch_all($sql);
+    return  $response;
+}
+
+//Lista de todos los requerimientos de soporte
+function soporte_mis_requerimientos(){
+    global $con;
+    $query = "select * from requerimientos where soporte_idusuarios =". $_SESSION["user"]["idusuarios"]." and estado <> 'atendido' and estado <> 'cancelado';";
+    $sql = mysqli_query($con, $query);
+    $response = mysqli_fetch_all($sql);
+    return  $response;
+}
+
+
+function asignar_requerimiento($codigo){
+    global $con;
+    $estado = "en proceso";
+    $informacion = "Se actualizo un requerimiento.";
+    $query = "call asignar_requerimiento(".$_SESSION["user"]["idusuarios"].", '".$codigo."');";
+    $sql = mysqli_query($con, $query);
+    $response = mysqli_fetch_assoc($sql);
+    enviar_email($codigo, $informacion, $response["email"], "En proceso", "Actualizacion de estado del requerimiento.");
+}
+
+
+function finalizar_requerimiento($codigo, $detalle, $estado){
+    global $con;
+    $estado = "atendido";
+    $informacion = "Se resolvio tu requerimiento: ".$detalle;
+    $query = "call finalizar_requerimiento('$codigo', '$detalle');";
+    $sql = mysqli_query($con, $query);
+    $response = mysqli_fetch_assoc($sql);
+    enviar_email($codigo, $informacion, $response["email"], $estado, "Actualizacion de estado del requerimiento.");
+}
+
+function cancelar_requerimiento($codigo){
+    global $con;
+    $estado = "cancelado";
+    $informacion = "Se cancelo tu requerimiento.";
+    $query = "call cancelar_requerimiento('$codigo');";
+    $sql = mysqli_query($con, $query);
+    $response = mysqli_fetch_assoc($sql);
+    enviar_email($codigo, $informacion, $response["email"], $estado, "Actualizacion de estado del requerimiento.");
+    echo "Se cancelo el requerimiento con exito";
 }

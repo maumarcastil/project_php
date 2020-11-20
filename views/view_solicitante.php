@@ -5,7 +5,7 @@ redirect_unset_session();
 ?>
 
 <div class="container p-3">
-    <?php existen_requerimientos();
+    <?php existen_requerimientos_solicitantes();
     ?>
 </div>
 

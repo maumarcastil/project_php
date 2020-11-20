@@ -29,9 +29,9 @@ if (!empty($_POST)) {
                     header("location: ../views/view_admin.php");
                     //echo("<br>Redirect view_admin");
                     break;
-                case "tecnico":
+                case "soporte":
                     $_SESSION["user"] = $row;
-                    echo("<br>Redirect view_admin");
+                    header("location: ../views/view_soporte.php");
                     break;
                 case "solicitante":
                     $_SESSION["user"] = $row;

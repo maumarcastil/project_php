@@ -1,4 +1,5 @@
 $(document).ready(() => {
+
     recargar_sevicio()
 
     $("#select_categoria").change(() => {
@@ -11,6 +12,8 @@ $(document).ready(() => {
     }
 
 });
+
+
 
 function recargar_sevicio() {
     $.ajax({
