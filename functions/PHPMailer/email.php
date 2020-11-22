@@ -16,7 +16,6 @@ function enviar_email($codigo, $informacion, $email,$estado, $asunto)
     $nombre = "Requerimiento <strong>#".$codigo."</strong>.";
     $informacion = $informacion."<br><strong>".$estado."</strong>.";
 
-
     $html = "<tbody><tr height='32' style='height:32px'><td></td></tr><tr align='center'><td><div><div></div></div><table border='0' cellspacing='0' cellpadding='0' style='padding-bottom:20px;max-width:516px;min-width:220px'><tbody><tr>";
     $html .= "<td width='8' style='width:8px'></td><td><div style='border-style:solid;border-width:thin;border-color:#dadce0;border-radius:8px;padding:40px 20px' align='center' class='m_114319817842147933mdv2rw'><img src='https://ci5.googleusercontent.com/proxy/T_zJ7UbaC9x27OP4-ZCPfDipqYLSGum30AlaxEycVclfvxO8Cze0sZ0kCrXlx6a-MgvW2tswbIyiNVfczjDuGh9okorzC5SUJDfwkHr6-3j1KUu94HuAw5uxM_jaElQef3Sub84=s0-d-e1-ft#https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_74x24dp.png' width='74' height='24' aria-hidden='true' style='margin-bottom:16px' alt='Google' class='CToWUd'><div style='font-family:'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;border-bottom:thin solid #dadce0;color:rgba(0,0,0,0.87);line-height:32px;padding-bottom:24px;text-align:center;word-break:break-word'>";
     $html .= "<table align='center' style='margin-top:8px'><tbody><tr style='line-height:normal'><td><a style='font-family:'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:rgba(0,0,0,0.87);font-size:14px;line-height:20px'>" . $nombre;

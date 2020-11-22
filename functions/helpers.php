@@ -252,6 +252,7 @@ function obtener_requerimientos_solicitante()
 {
     global $con;
     $query = "select * from requerimientos where solicitante_idusuarios = " . $_SESSION["user"]["idusuarios"] . ";";
+    //$query = "select * from requerimientos where solicitante_idusuarios = " . $_SESSION["user"]["idusuarios"] . " and estado <> 'atendido';";
     $sql = mysqli_query($con, $query);
     $response = mysqli_fetch_all($sql);
     return  $response;
